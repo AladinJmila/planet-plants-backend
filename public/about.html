@@ -1,0 +1,111 @@
+<html lang="en">
+  <head>
+    <!-- Required meta tags for character set and viewport -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Including Bootstrap CSS from CDN -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+
+    <!-- Including Font Awesome CSS from CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
+      integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <!-- Including custom styles -->
+    <link rel="stylesheet" href="/styles.css" />
+
+    <!-- Setting the title of the page -->
+    <title>Planet Plants</title>
+  </head>
+  <body>
+    <!-- Navigation bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+      <div class="container-fluid">
+        <!-- Brand -->
+        <a class="navbar-brand ms-4" href="/home">Planet Plants</a>
+        <!-- Toggler button for collapsed navigation -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavAltMarkup"
+          aria-controls="navbarNavAltMarkup"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Collapsible navigation links -->
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <!-- Navigation links aligned to the left -->
+          <div class="navbar-nav me-auto">
+            <a class="nav-link" href="/home">Home</a>
+            <a
+              onclick="WAD.handleRouteToBasket(event)"
+              class="nav-link"
+              href="/basket"
+              >Basket</a
+            >
+          </div>
+          <!-- Navigation links aligned to the right -->
+          <div class="navbar-nav float-end me-4">
+            <a class="nav-link" href="/about.html">About</a>
+            <a class="nav-link" href="/logout">Logout</a>
+            <a class="nav-link" href="/login">Login</a>
+            <!-- Basket icon with item count -->
+            <a
+              onclick="WAD.handleRouteToBasket(event)"
+              class="nav-link"
+              href="/basket"
+              id="shopping-basket"
+            >
+              <i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>
+              <i class="fa fa-pagelines" aria-hidden="true"></i>
+              <!-- Span for showing the number of items in the basket -->
+              <span id="basket-items-count"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main content container -->
+    <div class="container mb-5 about">
+      <h1>About us</h1>
+      <p class="mt-5 fs-4">
+        Welcome to Planet Plants, your ultimate destination for all things green
+        and natural! <br /><br />
+        At Planet Plants, we're passionate about bringing the beauty of nature
+        into your home and life. Our e-commerce platform offers a diverse range
+        of plant varieties, from elegant succulents to vibrant tropical palms,
+        curated to suit every taste and space.<br /><br />
+        Whether you're a seasoned plant enthusiast or just starting your green
+        journey, we're here to inspire and guide you every step of the way. With
+        a commitment to sustainability and quality, each plant is carefully
+        sourced and nurtured to ensure it thrives in your environment.<br /><br />
+        Explore our collection, discover expert care tips, and transform your
+        space into a green oasis with Planet Plants. Let's grow together!
+      </p>
+    </div>
+
+    <!-- Including Bootstrap JavaScript for functionality -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Including custom scripts -->
+    <script src="/scripts.js"></script>
+  </body>
+</html>
