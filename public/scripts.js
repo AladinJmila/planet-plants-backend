@@ -48,7 +48,7 @@ window.WAD = {
     let imagesURLs = [
       '/images/carousel1.jpg',
       '/images/carousel2.jpg',
-      '/images/carousel3.jpg'
+      '/images/carousel3.jpg',
     ]
 
     // Shuffle the array of image URLs to randomize their order
@@ -152,7 +152,7 @@ window.WAD = {
       basket.push({
         count: 1,
         productId: +productId,
-        productPrice: +productPrice
+        productPrice: +productPrice,
       })
 
       // Show an information popup indicating the item has been added to the basket
@@ -193,7 +193,7 @@ window.WAD = {
       height: '100%',
       fontWeight: 'bold',
       fontSize: '20px',
-      textAlign: 'center'
+      textAlign: 'center',
     }
 
     // Apply styles to the info popup element
@@ -288,8 +288,8 @@ window.WAD = {
         method: 'POST',
         body: JSON.stringify({ username, password }),
         headers: {
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
       })
 
       // Parse the response data as JSON
@@ -308,7 +308,7 @@ window.WAD = {
           window.localStorage.removeItem('goToBasket')
         } else {
           // Otherwise, redirect to the home page
-          window.location.href = '/home'
+          window.location.href = '/'
         }
 
         // Show the logout link and hide the login link in the navigation menu
@@ -430,7 +430,7 @@ window.WAD = {
     // If the basket is empty, remove the checkout button and offer navigation to the home page
     if (!basket.length) {
       document.querySelector('[onclick="WAD.openPurchaseModal()"]').outerHTML =
-        '<a class="btn btn-primary explore-collection" href="/home">Explore our collection</a>'
+        '<a class="btn btn-primary explore-collection" href="/">Explore our collection</a>'
     }
 
     // Update the basket items in localStorage with the modified basket array
@@ -581,7 +581,7 @@ window.WAD = {
     confirmPurchaseContainer.classList.add('show')
     confirmPurchaseContainer.scrollIntoView({
       block: 'nearest',
-      behavior: 'smooth'
+      behavior: 'smooth',
     })
 
     // Check the current button text to determine action
@@ -620,7 +620,7 @@ window.WAD = {
           clearInterval(countdownInterval)
           // Redirect to home page after delay
           setTimeout(() => {
-            window.location.href = '/home'
+            window.location.href = '/'
           }, 500)
         }
       }, 1000)
@@ -644,7 +644,7 @@ window.WAD = {
   bodyUnfreezeScroll() {
     // Reset the body overflow property to empty string to enable scrolling
     document.body.style.overflow = ''
-  }
+  },
 }
 
 // Event listener to execute the WAD initialization function when the window finishes loading
