@@ -3,6 +3,7 @@ const { engine } = require('express-handlebars')
 const path = require('path')
 const getDBdata = require('./src/db')
 const bodyParser = require('body-parser')
+const fs = require('fs')
 
 // Create an instance of the Express application
 const app = express()
@@ -29,7 +30,7 @@ app.get('/home', async (req, res) => {
   let data = await getDBdata('SELECT * FROM products;')
   data = data.map(product => ({
     ...product,
-    stars: Math.floor(product.rating)
+    stars: Math.floor(product.rating),
   }))
 
   // Render the 'home' template with the retrieved data
@@ -86,15 +87,51 @@ app.get('/plants/:id', async (req, res) => {
         reviews,
         similar: similar.map(product => ({
           ...product,
-          stars: Math.floor(product.rating)
-        }))
-      }
+          stars: Math.floor(product.rating),
+        })),
+      },
     })
   } catch (error) {
     // Handle database errors and send an appropriate response
     console.log('Database error: ', error)
     res.status(500).render('error', { message: 'Internal server error' })
   }
+})
+
+app.get('/export-db', async (req, res) => {
+  const db = []
+
+  for (let id = 1; id <= 27; id++) {
+    try {
+      const products = await getDBdata(
+        `SELECT * FROM products WHERE product_id = '${id}';`
+      )
+      const reviews = await getDBdata(
+        `SELECT * FROM reviews WHERE product_id = '${id}';`
+      )
+      const similar =
+        await getDBdata(`SELECT p.name, p.image_url, p.price, p.rating, p.product_id FROM products p
+                                    JOIN products_similar_products ps ON ps.product_id = '${id}'
+                                    WHERE p.product_id = ps.similar_product_id;`)
+
+      const plant = {
+        product: { ...products[0], stars: Math.floor(products[0].rating) },
+        reviews,
+        similar: similar.map(product => ({
+          ...product,
+          stars: Math.floor(product.rating),
+        })),
+      }
+
+      db.push(plant)
+    } catch (error) {
+      // Handle database errors and send an appropriate response
+      console.log('Database error: ', error)
+      res.status(500).render('error', { message: 'Internal server error' })
+    }
+  }
+
+  fs.writeFileSync('db.json', JSON.stringify(db))
 })
 
 // Route to render the basket page
