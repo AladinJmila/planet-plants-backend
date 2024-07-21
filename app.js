@@ -96,7 +96,7 @@ app.get('/plants/:id', async (req, res) => {
     //   },
     // })
 
-    const data = db.find(item => item.product.product_id == id)
+    const data = db.find(item => item.product.product_id.toString() === id)
     if (!data) throw new Error('Data not found')
 
     res.render('plant', { data })
@@ -120,9 +120,15 @@ app.get('/basket', async (req, res) => {
   const productsIds = orders.map(product => product?.productId)
 
   try {
-    const data = await getDBdata(
-      `SELECT * FROM products WHERE product_id IN (${productsIds.join(',')});`
-    )
+    // const data = await getDBdata(
+    //   `SELECT * FROM products WHERE product_id IN (${productsIds.join(',')});`
+    // )
+
+    const data = db
+      .filter(item =>
+        orders.map(o => o.productId).includes(item.product.product_id)
+      )
+      .map(item => item.product)
 
     // Add 'quantity' property to product data based on the orders
     data &&
