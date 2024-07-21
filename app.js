@@ -10,7 +10,7 @@ const db = require('./db.json')
 const app = express()
 
 // Define the port number for the server
-const port = 4388
+const port = process.env.PORT || 4388
 
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')))
@@ -26,7 +26,7 @@ app.set('view engine', 'handlebars')
 app.set('views', './views')
 
 // Route to render the home page
-app.get('/home', async (req, res) => {
+app.get('/', async (req, res) => {
   // Fetch data from the database and map it to include 'stars' based on 'rating'
   // let data = await getDBdata('SELECT * FROM products;')
   // data = data.map(product => ({
