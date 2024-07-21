@@ -4,6 +4,7 @@ const path = require('path')
 const getDBdata = require('./src/db')
 const bodyParser = require('body-parser')
 const fs = require('fs')
+const db = require('./db.json')
 
 // Create an instance of the Express application
 const app = express()
@@ -27,11 +28,14 @@ app.set('views', './views')
 // Route to render the home page
 app.get('/home', async (req, res) => {
   // Fetch data from the database and map it to include 'stars' based on 'rating'
-  let data = await getDBdata('SELECT * FROM products;')
-  data = data.map(product => ({
-    ...product,
-    stars: Math.floor(product.rating),
-  }))
+  // let data = await getDBdata('SELECT * FROM products;')
+  // data = data.map(product => ({
+  //   ...product,
+  //   stars: Math.floor(product.rating),
+  // }))
+
+  // console.log(data[0])
+  const data = db.map(item => item.product)
 
   // Render the 'home' template with the retrieved data
   res.render('home', { data })
