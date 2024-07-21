@@ -34,7 +34,6 @@ app.get('/home', async (req, res) => {
   //   stars: Math.floor(product.rating),
   // }))
 
-  // console.log(data[0])
   const data = db.map(item => item.product)
 
   // Render the 'home' template with the retrieved data
@@ -53,15 +52,16 @@ app.post('/login', async (req, res) => {
 
   try {
     // Check if the provided username and password match the database records
-    const data = await getDBdata(
-      `SELECT password FROM users WHERE username = '${username}'`
-    )
+    // const data = await getDBdata(
+    //   `SELECT password FROM users WHERE username = '${username}'`
+    // )
 
     // If a matching user is found, set isAuthenticated to true
-    if (data.length && data[0].password === password) isAuthenticated = true
+    // if (data.length && data[0].password === password) isAuthenticated = true
 
     // Send JSON response indicating whether authentication was successful
-    res.send({ isAuthenticated })
+    // res.send({ isAuthenticated })
+    res.send({ isAuthenticated: true })
   } catch (error) {
     // Handle database errors and send an appropriate response
     console.log('Database error: ', error)
@@ -73,69 +73,39 @@ app.post('/login', async (req, res) => {
 app.get('/plants/:id', async (req, res) => {
   const id = req.params.id
   try {
-    const products = await getDBdata(
-      `SELECT * FROM products WHERE product_id = '${id}';`
-    )
-    const reviews = await getDBdata(
-      `SELECT * FROM reviews WHERE product_id = '${id}';`
-    )
-    const similar =
-      await getDBdata(`SELECT p.name, p.image_url, p.price, p.rating, p.product_id FROM products p
-                                  JOIN products_similar_products ps ON ps.product_id = '${id}'
-                                  WHERE p.product_id = ps.similar_product_id;`)
+    // const products = await getDBdata(
+    //   `SELECT * FROM products WHERE product_id = '${id}';`
+    // )
+    // const reviews = await getDBdata(
+    //   `SELECT * FROM reviews WHERE product_id = '${id}';`
+    // )
+    // const similar =
+    //   await getDBdata(`SELECT p.name, p.image_url, p.price, p.rating, p.product_id FROM products p
+    //                               JOIN products_similar_products ps ON ps.product_id = '${id}'
+    //                               WHERE p.product_id = ps.similar_product_id;`)
 
     // Render the 'plant' template with the retrieved data
-    res.render('plant', {
-      data: {
-        product: { ...products[0], stars: Math.floor(products[0].rating) },
-        reviews,
-        similar: similar.map(product => ({
-          ...product,
-          stars: Math.floor(product.rating),
-        })),
-      },
-    })
+    // res.render('plant', {
+    //   data: {
+    //     product: { ...products[0], stars: Math.floor(products[0].rating) },
+    //     reviews,
+    //     similar: similar.map(product => ({
+    //       ...product,
+    //       stars: Math.floor(product.rating),
+    //     })),
+    //   },
+    // })
+
+    const data = db.find(item => item.product.product_id == id)
+    if (!data) throw new Error('Data not found')
+
+    res.render('plant', { data })
   } catch (error) {
     // Handle database errors and send an appropriate response
     console.log('Database error: ', error)
-    res.status(500).render('error', { message: 'Internal server error' })
+    // res.status(500).render('error', { message: 'Internal server error' })
+    res.status(500).render('error', { message: 'Plant not found' })
   }
-})
-
-app.get('/export-db', async (req, res) => {
-  const db = []
-
-  for (let id = 1; id <= 27; id++) {
-    try {
-      const products = await getDBdata(
-        `SELECT * FROM products WHERE product_id = '${id}';`
-      )
-      const reviews = await getDBdata(
-        `SELECT * FROM reviews WHERE product_id = '${id}';`
-      )
-      const similar =
-        await getDBdata(`SELECT p.name, p.image_url, p.price, p.rating, p.product_id FROM products p
-                                    JOIN products_similar_products ps ON ps.product_id = '${id}'
-                                    WHERE p.product_id = ps.similar_product_id;`)
-
-      const plant = {
-        product: { ...products[0], stars: Math.floor(products[0].rating) },
-        reviews,
-        similar: similar.map(product => ({
-          ...product,
-          stars: Math.floor(product.rating),
-        })),
-      }
-
-      db.push(plant)
-    } catch (error) {
-      // Handle database errors and send an appropriate response
-      console.log('Database error: ', error)
-      res.status(500).render('error', { message: 'Internal server error' })
-    }
-  }
-
-  fs.writeFileSync('db.json', JSON.stringify(db))
 })
 
 // Route to render the basket page
@@ -182,3 +152,39 @@ app.use((req, res) => {
 app.listen(port, () => {
   console.log(`Server running on port ${port}...`)
 })
+
+// app.get('/export-db', async (req, res) => {
+//   const db = []
+
+//   for (let id = 1; id <= 27; id++) {
+//     try {
+//       const products = await getDBdata(
+//         `SELECT * FROM products WHERE product_id = '${id}';`
+//       )
+//       const reviews = await getDBdata(
+//         `SELECT * FROM reviews WHERE product_id = '${id}';`
+//       )
+//       const similar =
+//         await getDBdata(`SELECT p.name, p.image_url, p.price, p.rating, p.product_id FROM products p
+//                                     JOIN products_similar_products ps ON ps.product_id = '${id}'
+//                                     WHERE p.product_id = ps.similar_product_id;`)
+
+//       const plant = {
+//         product: { ...products[0], stars: Math.floor(products[0].rating) },
+//         reviews,
+//         similar: similar.map(product => ({
+//           ...product,
+//           stars: Math.floor(product.rating),
+//         })),
+//       }
+
+//       db.push(plant)
+//     } catch (error) {
+//       // Handle database errors and send an appropriate response
+//       console.log('Database error: ', error)
+//       res.status(500).render('error', { message: 'Internal server error' })
+//     }
+//   }
+
+//   fs.writeFileSync('db.json', JSON.stringify(db))
+// })
